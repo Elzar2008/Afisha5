@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
-from .serializers import CategorySerializer, ProductSerializer, ReviewSerializer
+from .serializers import CategorySerializer, ProductSerializer, ProductReviewsListSerializer, ReviewSerializer
 from .models import Category, Product, Review
 
 
@@ -24,6 +24,16 @@ def categories_item_api_view(request, id):
 
 
 @api_view(['GET'])
+def product_item_api_view(request, id):
+    try:
+        products = Product.objects.get(id=id)
+    except Product.DoesNotExist:
+        return Response(data={'error': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
+    data = ProductSerializer(instance=products, many=False).data
+    return Response(data=data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
 def product_list_api_view(request):
     products = Product.objects.all()
     data = ProductSerializer(instance=products, many=True).data
@@ -31,12 +41,9 @@ def product_list_api_view(request):
 
 
 @api_view(['GET'])
-def product_item_api_view(request, id):
-    try:
-        products = Product.objects.get(id=id)
-    except Product.DoesNotExist:
-        return Response(data={'error': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
-    data = ProductSerializer(instance=products, many=False).data
+def product_reviews_list_api_view(request):
+    products = Product.objects.all()
+    data = ProductReviewsListSerializer(instance=products, many=True).data
     return Response(data=data, status=status.HTTP_200_OK)
 
 
