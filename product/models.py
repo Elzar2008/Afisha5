@@ -45,3 +45,8 @@ class Review(models.Model):
 
     def __str__(self):
         return self.product.title
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=128)
+    products = models.ManyToManyField(Product, related_name='tags')
