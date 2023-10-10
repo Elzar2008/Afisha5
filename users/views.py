@@ -2,21 +2,21 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
+from rest_framework.views import APIView
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from django.shortcuts import render
 from random import choices
 from .serializers import AuthorizationValidateSerializer, RegistrationValidateSerializer
 from .utils import send_email
 from .models import Confirm
 
 
-@api_view(['POST'])
-def registration_api_view(request):
-    if request.method == 'POST':
+class RegistrationAPIView(APIView):
+    def post(self, request):
         serializer = RegistrationValidateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = User.objects.create_user(**serializer.validated_data)
+
         code = ''.join(choices('0123456789', k=6))
         Confirm.objects.create(code=code, user=user)
 
@@ -27,9 +27,9 @@ def registration_api_view(request):
 
         return Response(data={'user_id': user.id, 'message': message}, status=status.HTTP_201_CREATED)
 
-@api_view(['POST'])
-def authorization_api_view(request):
-    if request.method == 'POST':
+
+class AuthorizationAPIView(APIView):
+    def post(self, request):
         serializer = AuthorizationValidateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -41,9 +41,8 @@ def authorization_api_view(request):
         return Response(status=status.HTTP_403_FORBIDDEN)
 
 
-@api_view(['GET'])
-def confirm_api_view(request):
-    if request.method == 'GET':
+class ConfirmAPIView(APIView):
+    def get(self, request):
         try:
             code = request.GET.get('code')
             user = Confirm.objects.get(code=code).user
