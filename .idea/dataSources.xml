@@ -2,7 +2,7 @@
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
     <data-source source="LOCAL" name="db" uuid="a3e6ed0b-86fb-4bbd-86ec-60df7ce7388d">
-      <driver-ref>sqlite.xerial</driver-ref>
+      <driver-ref>cde2f3c6-57f5-4db2-80f6-96c56c82251d</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:C:\Users\sarul\PycharmProjects\shop_api\db.sqlite3</jdbc-url>
@@ -12,6 +12,13 @@
           <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.43.0/sqlite-jdbc-3.43.0.0.jar</url>
         </library>
       </libraries>
+    </data-source>
+    <data-source source="LOCAL" name="postgres@localhost" uuid="e14d8f51-701d-41da-a9bf-c9d4c19f517f">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/postgres</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
 </project>
